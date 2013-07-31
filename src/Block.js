@@ -1,4 +1,4 @@
-define(['src/BlockTypes','src/Grid','src/Element'],function(BlockTypes, Grid, Element){
+define(['src/BlockTypes','src/Element','src/Set'],function(BlockTypes, Element, set){
 
   var BlockProto = {
     toString: function(){return "object Block"}
@@ -28,6 +28,36 @@ define(['src/BlockTypes','src/Grid','src/Element'],function(BlockTypes, Grid, El
       return els;
     }());
 
+    var getNewPoints = function(x,y){
+      var newPoints = [];
+      for (var i = 0; i < elements.length; i++) {
+        var point = elements[i].position();
+        var newPoint = [point[0] + x, point[1] + y];
+        newPoints.push(newPoint)
+      };
+      return newPoints;
+    };
+
+    var getNewRotatedPoints = function(){
+      var newPoints = [];
+      for (var i = 0; i < elements.length; i++) {
+        var oldPos = elements[i].position();
+        var xDis = oldPos[0] - attrs.center[0];
+        var yDis = oldPos[1] - attrs.center[1];
+        var newPoint = [yDis + attrs.center[0],-xDis + attrs.center[1]];
+        newPoints.push(newPoint)
+      };
+      return newPoints;
+    };
+
+    var collision = function(points){
+      for (var i = points.length - 1; i >= 0; i--) {
+        if(set.allowedToMove(points[i]) === false){
+          return true;
+        }
+      };
+    };
+
     var Block = Object.create(BlockProto)
     Block.type = function(){
       return attrs.type;
@@ -40,40 +70,40 @@ define(['src/BlockTypes','src/Grid','src/Element'],function(BlockTypes, Grid, El
     }
     Block.center = function(){
       return attrs.center;
+    };
+    Block.move = function(x,y){
+      var length = elements.length;
+      if(!collision(getNewPoints(x,y))) {
+        for (var i = elements.length - 1; i >= 0; i--) {
+          elements[i].move(x,y);
+        };
+        attrs.center[0] += x;
+        attrs.center[1] += y;
+      }else{
+        return false;
+      }
     }
     Block.moveDown = function(){
-      for (var i = elements.length - 1; i >= 0; i--) {
-        elements[i].moveDown();
-      };
-      attrs.center[1] += 1;
-    }
+      return this.move(0,1);
+    };
     Block.moveLeft = function(){
-      for (var i = elements.length - 1; i >= 0; i--) {
-        elements[i].moveLeft();
-      };
-      attrs.center[0] -= 1;
-    }
+      return this.move(-1,0);
+    };
     Block.moveRight = function(){
-      for (var i = elements.length - 1; i >= 0; i--) {
-        elements[i].moveRight();
-      };
-      attrs.center[0] += 1;
-    }
+      return this.move(1,0);
+    };
     Block.rotate = function(){
-      for (var i = elements.length - 1; i >= 0; i--) {
-        var oldPos = elements[i].position();
-        var xDis = oldPos[0] - attrs.center[0];
-        var yDis = oldPos[1] - attrs.center[1];
-        var rotated = [yDis, -xDis];
-        var newPos = [
-          rotated[0] + attrs.center[0],
-          rotated[1] + attrs.center[1]
-        ];
-        elements[i].position(newPos);
-      };
-    }
+      var newPoints = getNewRotatedPoints();
+      if(!collision(newPoints)) {
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].position(newPoints[i]);
+        }
+      }else{
+        return false;
+      }
+    };
 
-    return Block
+    return Block;
   }
 
 });

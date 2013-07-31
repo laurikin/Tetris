@@ -40,6 +40,21 @@ define(['src/Grid'],function(Grid){
 
     });
 
+    describe("outside(point)", function() {
+
+      it("returns true if given point is outside the grid", function() {
+        expect(grid.outside([100,399])).toBeTruthy();
+        expect(grid.outside([29,11])).toBeTruthy();
+        expect(grid.outside([41,3])).toBeTruthy();
+      });
+
+      it("returns false if given point is inside the grid", function() {
+        expect(grid.outside([39,6])).toBeFalsy();
+        expect(grid.outside([29,9])).toBeFalsy();
+      });
+
+    });
+
   });
 
 });

@@ -1,4 +1,4 @@
-define(['src/Grid','src/Set'],function(Grid, set){
+define(['src/Set'],function(set){
 
   var ElementProto = {
     toString: function(){return "object Element"}
@@ -10,7 +10,7 @@ define(['src/Grid','src/Set'],function(Grid, set){
       var opts = {};
     }
 
-    var size = Grid().cellSize();
+    var size = set.grid.cellSize();
 
     var attrs = {
       color: typeof opts.color !== 'undefined' ? opts.color : '#f00',
@@ -29,18 +29,20 @@ define(['src/Grid','src/Set'],function(Grid, set){
       }else{
         return attrs.position;
       }
-    }
+    };
+    Element.move = function(x,y){
+      attrs.position[0] += x;
+      attrs.position[1] += y;
+    };
     Element.moveDown = function(){
-      attrs.position[1] += 1;
-    }
+      this.move(0,1)
+    };
     Element.moveRight = function(){
-      attrs.position[0] += 1;
-    }
+      this.move(1,0)
+    };
     Element.moveLeft = function(){
-      attrs.position[0] -= 1;
-    }
-
-    set.elements.push(Element)
+      this.move(-1,0)
+    };
 
     return Element;
   }

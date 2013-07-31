@@ -41,6 +41,13 @@ define(['src/Cell'],function(Cell){
     Grid.cellSize = function(){
       return cellSize;
     }
+    Grid.outside = function(point){
+      if(point[0] >= Grid.columns || point[0] < 0 || point[1] >= Grid.rows || point[1] < 0 ){
+        return true;
+      }else{
+        return false;
+      }
+    }
 
     return Grid
   }

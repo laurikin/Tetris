@@ -2,13 +2,14 @@ define(['src/Set','src/config'],function(Set,config){
 
   return (function(){
 
-    var divs = [];
+    var elements = [];
 
     var setCss = function(el,element){
       $(el).css({
-        width: config.cellSize,
-        height: config.cellSize,
+        width: config.cellSize - 1,
+        height: config.cellSize - 1,
         "background-color": "#f00",
+        border: "solid 1px white",
         "z-index": 1000,
         position: "absolute",
         top: element.position()[1]*config.cellSize,
@@ -16,21 +17,19 @@ define(['src/Set','src/config'],function(Set,config){
       });
     }
 
-    var clearScreen = function(){
-      for (var i = divs.length - 1; i >= 0; i--) {
-        $(divs[i]).remove();
-      };
-    }
-
     var Renderer = {
       render: function(){
-        clearScreen();
-        var elements = Set.elements;
+        var elements = Set.elements.concat(Set.block.elements());
         for (var i = elements.length - 1; i >= 0; i--) {
-          var el = document.createElement("div")
-          setCss(el,elements[i]);
-          $(config.container).append(el);
-          divs.push(el);
+          if( typeof elements[i].node === 'undefined' ){
+            elements[i].node = (function(){
+              var div = document.createElement('div');
+              setCss(div,elements[i]);
+              $(config.container).append(div);
+              return div;
+            }());
+          }
+          setCss(elements[i].node,elements[i]);
         };
       }
     }
