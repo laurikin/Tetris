@@ -35,14 +35,12 @@ define(['src/Set','src/config'],function(Set,config){
       renderNextBlock: function(){
         var elements = Set.nextBlock.elements();
         for (var i = elements.length - 1; i >= 0; i--) {
-          if( typeof elements[i].node === 'undefined' ){
-            elements[i].node = (function(){
-                var div = document.createElement('div');
-                setCss(div,elements[i]);
-                $('#nextBlock').append(div);
-                return div;
-            }());
-          }
+          elements[i].node = (function(){
+              var div = document.createElement('div');
+              setCss(div,elements[i]);
+              $('#next-block').append(div);
+              return div;
+          }());
         }
       }
     }

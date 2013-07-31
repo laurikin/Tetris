@@ -3,7 +3,7 @@ body{
 }
 
 #wrapper {
-  max-width: 350px;
+  max-width: 380px;
   width: inherit;
   margin: 30px auto;
   overflow: hidden;
@@ -18,7 +18,7 @@ body{
 
 #score{
   float:left;
-  width: 70px;
+  width: 100px;
   padding: 15px 20px;
   font-family: verdana, "sans-serif";
   font-size: 18px;
@@ -26,9 +26,10 @@ body{
 }
 
 #next-block{
+  position: relative;
   float: left;
   background-color: #333;
   margin: 0 15px;
   height: 120px;
-  width: 120px;
+  width: 150px;
 }

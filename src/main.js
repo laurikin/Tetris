@@ -28,6 +28,14 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
     type: Math.floor((Math.random()*7)+1),
     center: [4,0] });
 
+  set.nextBlock = new Block({
+    type: Math.floor((Math.random()*7)+1),
+    center: [2,1] });
+
+  $(document).ready(function(){
+    Renderer.renderNextBlock();
+  });
+
   (function renderGrid() {
     for (var i = grid.cells().length - 1; i >= 0; i--) {
       var cell = grid.cells()[i];
@@ -50,7 +58,6 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
   },30);
 
   var game_interval = setInterval(function(){
-    console.log('Gaming!');
     if(set.block.moveDown() === false){
       for (var i = set.block.elements().length - 1; i >= 0; i--) {
         if(set.block.elements()[i].position()[1] === 0){
@@ -71,11 +78,9 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
           }
         };
         if(count >= set.grid.columns){
-          console.log('if_count > columns');
           destroyable_rows.push(row);
         }
       };
-      console.log(destroyable_rows);
       for (var k = destroyable_rows.length - 1; k >= 0; k--) {
         destroyRow(destroyable_rows[k]);
       };
@@ -86,10 +91,24 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
       set.counter.increment(destroyable_rows.length);
       $("#score").html(set.counter.score());
 
+      var type = set.nextBlock.type();
+
       set.block = new Block({
-        type: Math.floor((Math.random()*7)+1),
-        center: [4,0]
+        center: [4,0],
+        type: type
       });
+
+      for (var i = set.nextBlock.elements().length - 1; i >= 0; i--) {
+        $(set.nextBlock.elements()[i].node).remove();
+      };
+
+      set.nextBlock = new Block({
+        type: Math.floor((Math.random()*7)+1),
+        center: [2,1]
+      });
+
+      Renderer.renderNextBlock();
+      console.log(game_interval);
     }
   },500);
 
@@ -113,6 +132,7 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
         break;
     }
   });
+
 
 });
 
