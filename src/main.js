@@ -82,9 +82,14 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
       for (var l = destroyable_rows.length - 1; l >= 0; l--) {
         moveRowDown(destroyable_rows[l]);
       };
+
+      set.counter.increment(destroyable_rows.length);
+      $("#score").html(set.counter.score());
+
       set.block = new Block({
         type: Math.floor((Math.random()*7)+1),
-        center: [4,0] });
+        center: [4,0]
+      });
     }
   },500);
 

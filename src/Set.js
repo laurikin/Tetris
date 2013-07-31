@@ -1,4 +1,4 @@
-define(['src/Grid', 'src/config'],function(Grid,config){
+define(['src/Grid', 'src/Counter', 'src/config'],function(Grid,Counter,config){
 
   var collision_with_other_elements = function(point,elements){
     var length = elements.length
@@ -12,7 +12,9 @@ define(['src/Grid', 'src/config'],function(Grid,config){
   return {
     elements: [],
     block: 0,
+    nextBlock: 0,
     grid: new Grid(8,18,config.cellSize),
+    counter: new Counter(),
     allowedToMove : function(point){
       if(this.grid.outside(point) || collision_with_other_elements(point,this.elements) ){
         return false;

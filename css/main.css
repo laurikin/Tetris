@@ -1,0 +1,34 @@
+body{
+  background-color: #444;
+}
+
+#wrapper {
+  max-width: 350px;
+  width: inherit;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#tetris-container{
+  float:left;
+  position: relative;
+  width: 200px;
+  min-height: 500px;
+}
+
+#score{
+  float:left;
+  width: 70px;
+  padding: 15px 20px;
+  font-family: verdana, "sans-serif";
+  font-size: 18px;
+  color: #eee;
+}
+
+#next-block{
+  float: left;
+  background-color: #333;
+  margin: 0 15px;
+  height: 120px;
+  width: 120px;
+}
