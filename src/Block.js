@@ -26,6 +26,15 @@ define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
       newPoints.push(newPoint)
     },this);
     return newPoints;
+  },
+  getNewPoints = function(x,y){
+    var newPoints = [];
+    this.elements.forEach(function(element){
+      var point = element.position;
+      var newPoint = [point[0] + x, point[1] + y];
+      newPoints.push(newPoint)
+    });
+    return newPoints;
   };
 
 
@@ -96,45 +105,6 @@ define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
 });
 
   // return function(opts){
-
-  //   var blockType = BlockTypes[attrs.type];
-
-  //   var elements = (function(){
-  //     var els = [];
-  //     for (var i = 0 ; i < blockType.length; i++) {
-  //       var el = new Element({
-  //         color: '#f00',
-  //         position: [
-  //           blockType[i][0] + attrs.center[0],
-  //           blockType[i][1] + attrs.center[1]
-  //         ]
-  //       });
-  //       els.push(el);
-  //     };
-  //     return els;
-  //   }());
-
-  //   var getNewPoints = function(x,y){
-  //     var newPoints = [];
-  //     for (var i = 0; i < elements.length; i++) {
-  //       var point = elements[i].position();
-  //       var newPoint = [point[0] + x, point[1] + y];
-  //       newPoints.push(newPoint)
-  //     };
-  //     return newPoints;
-  //   };
-
-  //   var getNewRotatedPoints = function(){
-  //     var newPoints = [];
-  //     for (var i = 0; i < elements.length; i++) {
-  //       var oldPos = elements[i].position();
-  //       var xDis = oldPos[0] - attrs.center[0];
-  //       var yDis = oldPos[1] - attrs.center[1];
-  //       var newPoint = [yDis + attrs.center[0],-xDis + attrs.center[1]];
-  //       newPoints.push(newPoint)
-  //     };
-  //     return newPoints;
-  //   };
 
   //   var collision = function(points){
   //     for (var i = points.length - 1; i >= 0; i--) {

@@ -9,22 +9,23 @@ define(['src/Counter'],function(Counter){
   describe("Counter", function() {
 
     it("exists", function() {
-      expect(counter).toBeDefined();
+      console.log(counter);
+      expect(counter instanceof Counter).toBeTruthy();
     });
 
     it("keeps score", function() {
-      expect(counter.score()).toEqual(0);
+      expect(counter.score).toEqual(0);
     });
 
     it("increments score", function() {
       counter.increment(4);
-      expect(counter.score()).toEqual(160);
+      expect(counter.score).toEqual(160);
     });
 
     it("can be restarted", function() {
       counter.increment(4);
       counter.restart();
-      expect(counter.score()).toEqual(0);
+      expect(counter.score).toEqual(0);
     });
   });
 
