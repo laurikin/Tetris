@@ -1,25 +1,6 @@
-define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block,Renderer){
+define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer'],function(Timer,DB,Block,Renderer,Destroyer){
 
-  var destroyRow = function(row){
-    for (var i = DB.elements.length - 1; i >= 0; i--) {
-      if(DB.elements[i].position[1] === row){
-        var node = $(DB.elements[i].node);
-        node.fadeOut(400,function(){
-          node.remove();
-        });
-        DB.elements.splice(i,1);
-        delete element;
-      }
-    }
-  };
 
-  var moveRowDown = function(row){
-    DB.elements.forEach(function(element){
-      if(element.position[1] < row){
-        element.moveDown();
-      }
-    });
-  };
 
 
   var loop = {
@@ -53,7 +34,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
       };
 
       destroyable_rows.forEach(function(row){
-        destroyRow(row);
+        Destroyer.destroyRow(row);
       });
 
       if(destroyable_rows.length > 0){
@@ -61,7 +42,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
       }
 
       for (var i = destroyable_rows.length - 1; i >= 0; i--) {
-        moveRowDown(destroyable_rows[i]);
+        Destroyer.moveRowDown(destroyable_rows[i]);
       };
 
       DB.counter.increment(destroyable_rows.length);
