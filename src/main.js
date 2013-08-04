@@ -30,7 +30,14 @@ require(['src/config','src/Grid','src/Block','src/DB','src/Renderer','src/GameCo
 
   Renderer.renderGrid(grid);
 
-  GameController.start();
+  $(document).on('keydown.startscreen',function(e){
+    if(e.keyCode === 32){
+      if($('#start-screen').css('display') !== 'hidden'){
+        GameController.start();
+        $('#start-screen').fadeOut();
+      }
+    }
+  });
 
 });
 

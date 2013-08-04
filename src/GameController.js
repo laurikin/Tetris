@@ -59,12 +59,14 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
 
     },
     start: function(){
+      console.log('start');
       timer.start();
       Listeners.createGameKeys();
     },
     stop: function(){
       timer.stop();
       Listeners.destroyGameKeys();
+      $('#start-screen').fadeIn();
     }
 
   }
