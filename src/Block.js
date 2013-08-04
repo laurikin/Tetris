@@ -1,4 +1,4 @@
-define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
+define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockTypes, Element, CollisionDetector ){
 
 
 //*********************PRIVATE METHODS**********************//
@@ -35,6 +35,13 @@ define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
       newPoints.push(newPoint)
     });
     return newPoints;
+  },
+  collision = function(points){
+    points.forEach(function(point){
+      if(CollisionDetector.allowedToMove(point) === false){
+        return true;
+      }
+    });
   };
 
 
@@ -57,9 +64,13 @@ define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
 
   Block.prototype = {
     move: function(x,y){
-      this.elements.forEach(function(element){
-        element.move(x,y);
-      });
+      if(!collision(getNewPoints.call(this,x,y))) {
+        this.elements.forEach(function(element){
+          element.move(x,y);
+        });
+        this.attrs.center[0] += x;
+        this.attrs.center[1] += y;
+      }
     },
     moveDown: function(){
       this.move(0,1);
@@ -72,13 +83,13 @@ define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
     },
     rotate: function(){
       var newPoints = getNewRotatedPoints.call(this);
-      //if(!collision(newPoints)) {
+      if(!collision(newPoints)) {
         this.elements.forEach(function(element,i){
           element.position = newPoints[i];
         });
-      //}else{
-      //  return false;
-      //}
+      }else{
+        return false;
+      }
     }
   }
 
@@ -103,60 +114,3 @@ define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
   return Block;
 
 });
-
-  // return function(opts){
-
-  //   var collision = function(points){
-  //     for (var i = points.length - 1; i >= 0; i--) {
-  //       if(set.allowedToMove(points[i]) === false){
-  //         return true;
-  //       }
-  //     };
-  //   };
-
-    // var Block = Object.create(BlockProto)
-    // Block.type = function(){
-    //   return attrs.type;
-    // }
-    // Block.schema = function(){
-    //   return blockType;
-    // }
-    // Block.elements = function(){
-    //   return elements;
-    // }
-    // Block.center = function(){
-    //   return attrs.center;
-    // };
-    // Block.move = function(x,y){
-    //   var length = elements.length;
-    //   if(!collision(getNewPoints(x,y))) {
-    //     for (var i = elements.length - 1; i >= 0; i--) {
-    //       elements[i].move(x,y);
-    //     };
-    //     attrs.center[0] += x;
-    //     attrs.center[1] += y;
-    //   }else{
-    //     return false;
-    //   }
-    // }
-    // Block.moveDown = function(){
-    //   return this.move(0,1);
-    // };
-    // Block.moveLeft = function(){
-    //   return this.move(-1,0);
-    // };
-    // Block.moveRight = function(){
-    //   return this.move(1,0);
-    // };
-    // Block.rotate = function(){
-    //   var newPoints = getNewRotatedPoints();
-    //   if(!collision(newPoints)) {
-    //     for (var i = 0; i < elements.length; i++) {
-    //       elements[i].position(newPoints[i]);
-    //     }
-    //   }else{
-    //     return false;
-    //   }
-    // };
-
-  //}

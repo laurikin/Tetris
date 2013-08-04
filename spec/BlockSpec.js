@@ -1,12 +1,14 @@
-define(['src/Block'],function(Block){
+define(['src/Block','src/DB', 'src/Grid'],function(Block,DB,Grid){
 
   //blocktype 2: [[-1,1],[0,1],[1,1],[1,0]]
+
 
   describe("Block", function() {
 
     var block;
 
     beforeEach(function() {
+      DB.grid = new Grid();
       block = new Block({
         type: 2,
         center: [0,0]

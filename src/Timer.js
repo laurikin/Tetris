@@ -7,7 +7,7 @@ define([],function(){
       this.timer = null;
 
       this.fps = settings.fps || 30;
-      this.interval = Math.floor(1000/30);
+      this.interval = Math.floor(1000/this.fps);
       this.timeInit = null;
 
       return this;

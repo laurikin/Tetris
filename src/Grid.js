@@ -29,7 +29,6 @@ define(['src/Cell'],function(Cell){
       return {
         rows: o.rows || 36,
         columns: o.columns || 12,
-        y: o.x || 0,
         cellSize: o.cellSize || 30
       }
     }());
