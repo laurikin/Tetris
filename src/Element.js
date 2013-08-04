@@ -4,13 +4,15 @@ define(['src/config'],function(config){
 
   var Element = function(opts){
 
-    this.opts = opts || {};
+    this.attrs = (function(){
+      var o = ( opts ? opts : {} );
+      return {
+        color : o.color || '#f00',
+        size : o.size || size,
+        position : o.position || [0,0]
+      }
 
-    this.attrs = {
-        color : opts.color || '#f00',
-        size : opts.size || size,
-        position : opts.position || [0,0]
-    };
+    }());
 
   }
 
