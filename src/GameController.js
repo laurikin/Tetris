@@ -57,7 +57,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
       });
 
       if(destroyable_rows.length > 0){
-        timer.increaseSpeed(Math.floor(DB.counter.score/20) + 1);
+        timer.increaseSpeed(Math.floor(DB.counter.score/100) + 2);
       }
 
       for (var i = destroyable_rows.length - 1; i >= 0; i--) {

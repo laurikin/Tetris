@@ -8,7 +8,7 @@ define([],function(){
       this.running = false;
 
       this.fps = settings.fps || 30;
-      this.interval = Math.floor(1000/this.fps);
+      this.interval = function(){ return Math.floor(1000/this.fps); }
       this.timeInit = null;
   }
 
@@ -20,7 +20,7 @@ define([],function(){
             var $this = this;
 
             this.settings.run();
-            this.timeInit += this.interval;
+            this.timeInit += this.interval();
 
             this.timer = setTimeout(
                 function(){$this.run()},
@@ -46,8 +46,8 @@ define([],function(){
           this.timer = null;
           this.running = false
       },
-      increaseSpeed: function(multiplier){
-        this.interval = this.interval * 1/multiplier
+      increaseSpeed: function(num){
+        this.fps = num
       }
   }
 
