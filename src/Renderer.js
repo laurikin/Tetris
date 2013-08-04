@@ -42,6 +42,22 @@ define(['src/DB','src/config'],function(DB,config){
               return div;
           }());
         }
+      },
+      renderGrid: function(grid){
+        for (var i = grid.cells.length - 1; i >= 0; i--) {
+          var cell = grid.cells[i];
+          var celldiv = document.createElement("div");
+          $(celldiv).css({
+            width: cell.size,
+            height: cell.size,
+            'background-color': '#000',
+            position: "absolute",
+            border: "solid 1px grey",
+            top: cell.y,
+            left: cell.x
+          });
+          $('#tetris-container').append(celldiv);
+        };
       }
     }
 

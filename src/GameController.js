@@ -1,51 +1,32 @@
-define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer'],function(Timer,DB,Block,Renderer,Destroyer){
+define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Listeners'],function(Timer,DB,Block,Renderer,Destroyer,Listeners){
 
+  var gameOver = function(callBack){
+    DB.elements.forEach(function(element){
+      if(element.position[1] === 0){
+        callBack();
+      }
+    });
+  }
 
-
-
-  var loop = {
-    fps: 2,
-    run: function(){
+  var loop = function(){
       if(DB.block.moveDown() === false){
 
-      DB.elements.forEach(function(element){
-        if(element.position[1] === 0){
-          GameController.stop();
-          console.log('Game Over!');
-        }
+      gameOver(function(){
+        GameController.stop();
+        console.log('Game Over!');
       });
 
       DB.block.elements.forEach(function(element){
         DB.elements.push(element);
       });
 
-      var destroyable_rows = [];
+      var destroyableRows = Destroyer.destroyRows();
 
-      for (var row = DB.grid.rows - 1; row >= 0; row--) {
-        var count = 0;
-        DB.elements.forEach(function(element){
-          if (element.position[1] === row) {
-            count += 1;
-          }
-        });
-        if(count >= DB.grid.columns){
-          destroyable_rows.push(row);
-        }
-      };
-
-      destroyable_rows.forEach(function(row){
-        Destroyer.destroyRow(row);
-      });
-
-      if(destroyable_rows.length > 0){
+      if(destroyableRows.length > 0){
         timer.increaseSpeed(Math.floor(DB.counter.score/100) + 2);
       }
 
-      for (var i = destroyable_rows.length - 1; i >= 0; i--) {
-        Destroyer.moveRowDown(destroyable_rows[i]);
-      };
-
-      DB.counter.increment(destroyable_rows.length);
+      DB.counter.increment(destroyableRows.length);
       $("#score").html(DB.counter.score);
 
       DB.block = new Block({
@@ -65,10 +46,12 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer'],functio
       Renderer.renderNextBlock();
       }
 
-    }
-  };
+  }
 
-  var timer = new Timer(loop);
+  var timer = new Timer({
+    fps: 2,
+    run: loop
+    });
 
   var GameController = {
 
@@ -77,10 +60,12 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer'],functio
     },
     start: function(){
       timer.start();
+      Listeners.createGameKeys();
     },
     stop: function(){
       timer.stop();
-    },
+      Listeners.destroyGameKeys();
+    }
 
   }
 

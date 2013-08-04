@@ -21,11 +21,34 @@ define(['src/DB'],function(DB) {
         }
       });
     },
-    start: function(){
-      timer.start();
+    destroyableRows: function(){
+      var destroyableRows = [];
+      for (var row = DB.grid.rows - 1; row >= 0; row--) {
+        var count = 0;
+        DB.elements.forEach(function(element){
+          if (element.position[1] === row) {
+            count += 1;
+          }
+        });
+        if(count >= DB.grid.columns){
+          destroyableRows.push(row);
+        }
+      }
+      return destroyableRows;
     },
-    stop: function(){
-      timer.stop();
+    destroyRows: function(){
+
+      var destroyableRows = this.destroyableRows();
+
+      destroyableRows.forEach(function(row){
+        this.destroyRow(row);
+      },this);
+
+      for (var i = destroyableRows.length - 1; i >= 0; i--) {
+        this.moveRowDown(destroyableRows[i]);
+      };
+
+      return destroyableRows;
     }
   }
   return Destroyer;
