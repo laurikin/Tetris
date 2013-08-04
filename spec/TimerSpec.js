@@ -11,7 +11,8 @@ define(['src/Timer'],function(Timer){
 
   describe("Timer", function() {
     it("exists", function() {
-      expect(Timer).toBeDefined();
+      console.log(timer);
+      expect(timer instanceof Timer).toBeTruthy();
     });
   });
 

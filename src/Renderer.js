@@ -1,4 +1,4 @@
-define(['src/Set','src/config'],function(Set,config){
+define(['src/DB','src/config'],function(DB,config){
 
   return (function(){
 
@@ -12,14 +12,14 @@ define(['src/Set','src/config'],function(Set,config){
         border: "solid 1px white",
         "z-index": 1000,
         position: "absolute",
-        top: element.position()[1]*config.cellSize,
-        left: element.position()[0]*config.cellSize
+        top: element.position[1]*config.cellSize,
+        left: element.position[0]*config.cellSize
       });
     }
 
     var Renderer = {
       render: function(){
-        var elements = Set.elements.concat(Set.block.elements());
+        var elements = DB.elements.concat(DB.block.elements);
         for (var i = elements.length - 1; i >= 0; i--) {
           if( typeof elements[i].node === 'undefined' ){
             elements[i].node = (function(){
@@ -33,7 +33,7 @@ define(['src/Set','src/config'],function(Set,config){
         };
       },
       renderNextBlock: function(){
-        var elements = Set.nextBlock.elements();
+        var elements = DB.nextBlock.elements;
         for (var i = elements.length - 1; i >= 0; i--) {
           elements[i].node = (function(){
               var div = document.createElement('div');

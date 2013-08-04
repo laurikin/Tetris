@@ -37,12 +37,14 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
     return newPoints;
   },
   collision = function(points){
+    var collision = false;
     points.forEach(function(point){
-      if(CollisionDetector.allowedToMove(point) === false){
-        return true;
+      if(!CollisionDetector.allowedToMove(point)){
+        collision = true;
       }
     });
-  };
+    return collision
+  }
 
 
 
@@ -64,26 +66,28 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
 
   Block.prototype = {
     move: function(x,y){
-      if(!collision(getNewPoints.call(this,x,y))) {
+      if(!collision(getNewPoints.call(this,x,y))){
         this.elements.forEach(function(element){
           element.move(x,y);
         });
         this.attrs.center[0] += x;
         this.attrs.center[1] += y;
+      }else{
+        return false;
       }
     },
     moveDown: function(){
-      this.move(0,1);
+      return this.move(0,1);
     },
     moveLeft: function(){
-      this.move(-1,0);
+      return this.move(-1,0);
     },
     moveRight: function(){
-      this.move(1,0);
+      return this.move(1,0);
     },
     rotate: function(){
       var newPoints = getNewRotatedPoints.call(this);
-      if(!collision(newPoints)) {
+      if(!collision.call(this,newPoints)) {
         this.elements.forEach(function(element,i){
           element.position = newPoints[i];
         });

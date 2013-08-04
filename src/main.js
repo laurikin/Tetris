@@ -2,43 +2,31 @@ require.config({
           baseUrl: "./"
         });
 
-require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(config,Grid,Block,set,Renderer){
-  var grid = set.grid
-  var destroyRow = function(row){
-    for (var i = set.elements.length - 1; i >= 0; i--) {
-      if(set.elements[i].position()[1] === row){
-        var node = $(set.elements[i].node);
-        var el = set.elements.splice(i,1);
-        delete el;
-        node.fadeOut(400,function(){
-          node.remove();
-        });
-      }
-    };
-  };
-  var moveRowDown = function(row){
-    for (var i = set.elements.length - 1; i >= 0; i--) {
-      if(set.elements[i].position()[1] < row){
-        set.elements[i].moveDown();
-      }
-    };
-  };
+require(['src/config','src/Grid','src/Block','src/DB','src/Renderer','src/GameController','src/Counter'],function(config,Grid,Block,DB,Renderer,GameController,Counter){
 
-  set.block = new Block({
+  DB.grid = new Grid({
+    cellSize: config.cellSize,
+    columns: 8,
+    rows: 18
+  });
+  var grid = DB.grid;
+
+  DB.counter = new Counter();
+
+
+  DB.block = new Block({
     type: Math.floor((Math.random()*7)+1),
     center: [4,0] });
 
-  set.nextBlock = new Block({
+  DB.nextBlock = new Block({
     type: Math.floor((Math.random()*7)+1),
     center: [2,1] });
 
-  $(document).ready(function(){
-    Renderer.renderNextBlock();
-  });
+  Renderer.renderNextBlock();
 
   (function renderGrid() {
-    for (var i = grid.cells().length - 1; i >= 0; i--) {
-      var cell = grid.cells()[i];
+    for (var i = grid.cells.length - 1; i >= 0; i--) {
+      var cell = grid.cells[i];
       var celldiv = document.createElement("div");
       $(celldiv).css({
         width: cell.size,
@@ -57,78 +45,25 @@ require(['src/config','src/Grid','src/Block','src/Set','src/Renderer'],function(
     Renderer.render()
   },30);
 
-  var game_interval = setInterval(function(){
-    if(set.block.moveDown() === false){
-      for (var i = set.block.elements().length - 1; i >= 0; i--) {
-        if(set.block.elements()[i].position()[1] === 0){
-          window.clearInterval(game_interval);
-          window.clearInterval(rendering_interval);
-          alert('Game Over!');
-        }
-      };
-      for (var i = set.block.elements().length - 1; i >= 0; i--) {
-        set.elements.push(set.block.elements()[i]);
-      };
-      var destroyable_rows = []
-      for (var row = set.grid.rows - 1; row >= 0; row--) {
-        var count = 0;
-        for (var j = set.elements.length - 1; j >= 0; j--) {
-          if (set.elements[j].position()[1] === row) {
-            count += 1;
-          }
-        };
-        if(count >= set.grid.columns){
-          destroyable_rows.push(row);
-        }
-      };
-      for (var k = destroyable_rows.length - 1; k >= 0; k--) {
-        destroyRow(destroyable_rows[k]);
-      };
-      for (var l = destroyable_rows.length - 1; l >= 0; l--) {
-        moveRowDown(destroyable_rows[l]);
-      };
-
-      set.counter.increment(destroyable_rows.length);
-      $("#score").html(set.counter.score());
-
-      var type = set.nextBlock.type();
-
-      set.block = new Block({
-        center: [4,0],
-        type: type
-      });
-
-      for (var i = set.nextBlock.elements().length - 1; i >= 0; i--) {
-        $(set.nextBlock.elements()[i].node).remove();
-      };
-
-      set.nextBlock = new Block({
-        type: Math.floor((Math.random()*7)+1),
-        center: [2,1]
-      });
-
-      Renderer.renderNextBlock();
-      console.log(game_interval);
-    }
-  },500);
+  GameController.start();
 
   $(document).on('keydown',function(e){
     switch(e.keyCode){
       case 37:
         // left arrow   37
-        set.block.moveLeft();
+        DB.block.moveLeft();
         break;
       case 38:
         // up arrow   38
-        set.block.rotate();
+        DB.block.rotate();
         break;
       case 39:
         // right arrow  39
-        set.block.moveRight();
+        DB.block.moveRight();
         break;
       case 40:
         // down arrow   40
-        set.block.moveDown();
+        DB.block.moveDown();
         break;
     }
   });
