@@ -5,6 +5,7 @@ define([],function(){
   {
       this.settings = settings;
       this.timer = null;
+      this.running = false;
 
       this.fps = settings.fps || 30;
       this.interval = Math.floor(1000/this.fps);
@@ -14,15 +15,19 @@ define([],function(){
   Timer.prototype = {
       run: function()
       {
-          var $this = this;
+          if(this.running){
 
-          this.settings.run();
-          this.timeInit += this.interval;
+            var $this = this;
 
-          this.timer = setTimeout(
-              function(){$this.run()},
-              this.timeInit - (new Date).getTime()
-          );
+            this.settings.run();
+            this.timeInit += this.interval;
+
+            this.timer = setTimeout(
+                function(){$this.run()},
+                this.timeInit - (new Date).getTime()
+            );
+
+          }
       },
 
       start: function()
@@ -30,6 +35,7 @@ define([],function(){
           if(this.timer == null)
           {
               this.timeInit = (new Date).getTime();
+              this.running = true;
               this.run();
           }
       },
@@ -38,6 +44,10 @@ define([],function(){
       {
           clearTimeout(this.timer);
           this.timer = null;
+          this.running = false
+      },
+      increaseSpeed: function(multiplier){
+        this.interval = this.interval * 1/multiplier
       }
   }
 

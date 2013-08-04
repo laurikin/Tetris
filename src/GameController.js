@@ -21,6 +21,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
     });
   };
 
+
   var loop = {
     fps: 2,
     run: function(){
@@ -28,6 +29,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
 
       DB.elements.forEach(function(element){
         if(element.position[1] === 0){
+          GameController.stop();
           console.log('Game Over!');
         }
       });
@@ -54,7 +56,9 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
         destroyRow(row);
       });
 
-      console.log(destroyable_rows);
+      if(destroyable_rows.length > 0){
+        timer.increaseSpeed(Math.floor(DB.counter.score/20) + 1);
+      }
 
       for (var i = destroyable_rows.length - 1; i >= 0; i--) {
         moveRowDown(destroyable_rows[i]);
@@ -83,15 +87,19 @@ define(['src/Timer','src/DB','src/Block','src/Renderer'],function(Timer,DB,Block
     }
   };
 
+  var timer = new Timer(loop);
+
   var GameController = {
 
-  prepare: function(){
+    prepare: function(){
 
-  },
-  start: function(){
-    var timer = new Timer(loop)
-    timer.start();
-  }
+    },
+    start: function(){
+      timer.start();
+    },
+    stop: function(){
+      timer.stop();
+    },
 
   }
 
