@@ -1,4 +1,4 @@
-define(['src/BlockTypes','src/Element','src/Set'],function(BlockTypes, Element, set){
+define(['src/BlockTypes','src/Element'],function(BlockTypes, Element, set){
 
 
 //*********************PRIVATE METHODS**********************//
@@ -7,7 +7,6 @@ define(['src/BlockTypes','src/Element','src/Set'],function(BlockTypes, Element, 
     var els = [];
       this.schema.forEach(function(e,i){
         var el = new Element({
-          color: '#f00',
           position: [
             this.schema[i][0] + this.center[0],
             this.schema[i][1] + this.center[1]

@@ -1,6 +1,4 @@
-define(['src/config'],function(config){
-
-  var size = config.cellSize;
+define([],function(){
 
   var Element = function(opts){
 
@@ -8,7 +6,7 @@ define(['src/config'],function(config){
       var o = ( opts ? opts : {} );
       return {
         color : o.color || '#f00',
-        size : o.size || size,
+        size : o.size || 10,
         position : o.position || [0,0]
       }
 

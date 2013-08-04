@@ -5,7 +5,7 @@ define(['src/Cell'],function(Cell){
     var cell;
 
     beforeEach(function() {
-      cell = Cell({
+      cell = new Cell({
         size: 25,
         x: 50,
         y: 150
@@ -13,7 +13,8 @@ define(['src/Cell'],function(Cell){
     });
 
     it("exists", function() {
-      expect(cell.toString()).toEqual('object Cell');
+      console.log(cell);
+      expect(cell instanceof Cell).toBeTruthy();
     });
 
     it("has size", function() {

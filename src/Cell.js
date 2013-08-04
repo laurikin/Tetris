@@ -1,22 +1,30 @@
 define([],function(){
 
-  var CellProto = {
-    toString: function(){return "object Cell"}
-  };
+  var Cell = function(opts){
 
-  return function(opts){
+    this.attrs = (function(){
+      var o = ( opts ? opts : {} );
+      return {
+        size: o.size || 1,
+        x: o.x || 0,
+        y: o.y || 0
+      }
+    }());
 
-    var attrs = {
-      size: typeof opts.size !== 'undefined' ? opts.size : 30,
-      x: opts.x,
-      y: opts.y
-    }
-
-    var Cell = Object.create(CellProto)
-    Cell.size = attrs.size;
-    Cell.x = attrs.x;
-    Cell.y = attrs.y;
-
-    return Cell
   }
+
+  Object.defineProperties(Cell.prototype,{
+    size: {
+      get: function(){ return this.attrs.size; }
+    },
+    x: {
+      get: function(){ return this.attrs.x; }
+    },
+    y: {
+      get: function(){ return this.attrs.y; }
+    }
+  });
+
+  return Cell;
+
 });
