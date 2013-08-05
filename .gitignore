@@ -1,0 +1,8 @@
+/spec/*
+/lib/*
+
+/build/*
+
+r.js
+app.build.js
+SpecRunner.html
