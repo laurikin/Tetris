@@ -29,6 +29,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
 
   var GameController = {
 
+    playing: false,
     mainLoop: function(){
 
       var $this = this;
@@ -76,36 +77,43 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
     },
     gameTimer: 0,
     prepare: function(){
-      DB.counter.restart();
-      $("#score").html(DB.counter.score);
-      DB.deleteAll();
-      Renderer.clear();
-      Renderer.renderGrid(DB.grid);
-      DB.block = new Block({
-        center: [4,0] });
-      DB.nextBlock = new Block({
-        center: [2,1] });
+      if(this.playing === false){
+        DB.counter.restart();
+        $("#score").html(DB.counter.score);
+        DB.deleteAll();
+        Renderer.clear();
+        Renderer.renderGrid(DB.grid);
+        DB.block = new Block({
+          center: [4,0] });
+        DB.nextBlock = new Block({
+          center: [2,1] });
 
-      Renderer.renderNextBlock();
+        Renderer.renderNextBlock();
 
-      this.renderingInterval = setInterval(function(){
-        Renderer.render()
-      },30);
+        this.renderingInterval = setInterval(function(){
+          Renderer.render()
+        },30);
 
-      this.gameTimer = createTimer.call(this,this.mainLoop);
-
+        this.gameTimer = createTimer.call(this,this.mainLoop);
+      }
     },
     start: function(){
-      console.log('start');
-      this.gameTimer.start();
-      Listeners.createGameKeys();
-      $('#start-screen').fadeOut();
+      if(this.playing === false){
+        console.log('start');
+        this.playing = true;
+        this.gameTimer.start();
+        Listeners.createGameKeys();
+        $('#start-screen').fadeOut();
+      }
     },
     stop: function(){
-      this.gameTimer.stop();
-      clearInterval(this.renderingInterval);
-      Listeners.destroyGameKeys();
-      $('#start-screen').fadeIn();
+      if(this.playing === true){
+        this.playing = false;
+        this.gameTimer.stop();
+        clearInterval(this.renderingInterval);
+        Listeners.destroyGameKeys();
+        $('#start-screen').fadeIn();
+      }
     }
 
   }
