@@ -60,13 +60,13 @@ define(['src/Element','src/CollisionDetector'],function( Element, CollisionDetec
     [[-1,0],[-1,1],[0,1],[1,1]],
   ],
   colors = [
-    '#f00',
-    '#00f',
-    '#0f0',
-    '#ff0',
-    '#0ff',
-    '#f0f',
-    '#888'
+    '#f3bc13',
+    '#d91313',
+    '#4d9ad0',
+    '#3a4aae',
+    '#3ae03a',
+    '#e34818',
+    '#ef7c16'
   ];
 
 
@@ -78,7 +78,7 @@ define(['src/Element','src/CollisionDetector'],function( Element, CollisionDetec
     this.attrs = (function(){
       var o = ( opts ? opts : {} );
       return {
-        type: typeof o.type !== 'undefined' ? o.type : ( Math.floor(Math.random()*( blockTypes.length -1))),
+        type: typeof o.type !== 'undefined' ? o.type : ( Math.floor(Math.random()*blockTypes.length)),
         center: o.center || [4,1]
       }
     }());

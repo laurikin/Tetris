@@ -1,14 +1,15 @@
 require.config({
-          baseUrl: "./"
-        });
+  baseUrl: "./"
+});
 
-require(['src/config','src/Grid','src/Block','src/DB','src/Renderer','src/GameController','src/Counter'],function(config,Grid,Block,DB,Renderer,GameController,Counter){
+require(['src/tetrisConfig','src/Grid','src/Block','src/DB','src/Renderer','src/GameController','src/Counter'],function(config,Grid,Block,DB,Renderer,GameController,Counter){
 
   DB.grid = new Grid({
     cellSize: config.cellSize,
     columns: 8,
     rows: 18
   });
+
   var grid = DB.grid;
 
   DB.counter = new Counter();

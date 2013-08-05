@@ -1,4 +1,4 @@
-define(['src/DB','src/config'],function(DB,config){
+define(['src/DB','src/tetrisConfig'],function(DB,config){
 
   return (function(){
 
