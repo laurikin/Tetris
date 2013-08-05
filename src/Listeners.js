@@ -1,4 +1,4 @@
-define(['src/DB'],function(DB){
+define(['src/DB', 'src/GameController'],function(DB,GameController){
 
   var gameKeys = function(e){
     switch(e.keyCode){
@@ -30,7 +30,6 @@ define(['src/DB'],function(DB){
     destroyGameKeys: function(){
       $(document).off('keydown.game');
     }
-
   }
 
   return Listeners;

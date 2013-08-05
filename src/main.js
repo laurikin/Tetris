@@ -2,7 +2,7 @@ require.config({
   baseUrl: "./"
 });
 
-require(['src/tetrisConfig','src/Grid','src/Block','src/DB','src/Renderer','src/GameController','src/Counter'],function(config,Grid,Block,DB,Renderer,GameController,Counter){
+require(['src/tetrisConfig','src/Grid','src/DB','src/Renderer','src/Counter','src/GameController'],function(config,Grid,DB,Renderer,Counter,GameController){
 
   DB.grid = new Grid({
     cellSize: config.cellSize,
@@ -16,13 +16,10 @@ require(['src/tetrisConfig','src/Grid','src/Block','src/DB','src/Renderer','src/
 
   Renderer.renderGrid(grid);
 
-  $(document).on('keydown.startscreen',function(e){
-    if(e.keyCode === 32){
-      if($('#start-screen').css('display') !== 'hidden'){
-        GameController.prepare();
-        GameController.start();
-        $('#start-screen').fadeOut();
-      }
+  $(document).on('keydown', function(e){
+    if(e.keyCode === 32 && $('#start-screen').css('display') !== 'none'){
+      GameController.prepare();
+      GameController.start();
     }
   });
 

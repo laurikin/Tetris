@@ -99,6 +99,7 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
       console.log('start');
       this.gameTimer.start();
       Listeners.createGameKeys();
+      $('#start-screen').fadeOut();
     },
     stop: function(){
       this.gameTimer.stop();
