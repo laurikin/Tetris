@@ -1,6 +1,6 @@
-define(['src/Block','src/DB', 'src/Grid'],function(Block,DB,Grid){
+define(['src/Block','src/DB', 'src/Grid','src/CollisionDetector'],function(Block,DB,Grid,CollisionDetector){
 
-  //blocktype 2: [[-1,1],[0,1],[1,1],[1,0]]
+  //blocktype[1]: [[-1,1],[0,1],[1,1],[1,0]]
 
 
   describe("Block", function() {
@@ -8,10 +8,10 @@ define(['src/Block','src/DB', 'src/Grid'],function(Block,DB,Grid){
     var block;
 
     beforeEach(function() {
-      DB.grid = new Grid();
+      DB.grid = new Grid(8,18);
       block = new Block({
-        type: 2,
-        center: [0,0]
+        type: 1,
+        center: [4,4]
       });
     });
 
@@ -22,7 +22,7 @@ define(['src/Block','src/DB', 'src/Grid'],function(Block,DB,Grid){
     });
 
     it("has type", function() {
-      expect(block.type).toBe(2)
+      expect(block.type).toBe(1)
     });
 
     it("has schema", function() {
@@ -30,47 +30,44 @@ define(['src/Block','src/DB', 'src/Grid'],function(Block,DB,Grid){
       expect(block.schema).toEqual(schema);
     });
 
+    it("has color", function() {
+      expect(block.color).toBe('#00f');
+    });
+
     it("has center", function() {
-      expect(block.center).toEqual([0,0]);
+      expect(block.center).toEqual([4,4]);
     });
 
     it("has elements", function() {
-      expect(block.elements[0].position).toEqual([-1,1]);
+      expect(block.elements[0].position).toEqual([3,5]);
     });
 
-    it("moves down", function() {
-      block.moveDown();
-      expect(block.elements[0].position).toEqual([-1,2]);
-      expect(block.elements[1].position).toEqual([0,2]);
-      expect(block.elements[2].position).toEqual([1,2]);
-      expect(block.elements[3].position).toEqual([1,1]);
-    });
 
     describe("if space", function() {
 
       it("moves left", function() {
         block.moveLeft();
-        expect(block.elements[0].position).toEqual([-2,1]);
-        expect(block.elements[1].position).toEqual([-1,1]);
-        expect(block.elements[2].position).toEqual([0,1]);
-        expect(block.elements[3].position).toEqual([0,0]);
+        expect(block.elements[0].position).toEqual([2,5]);
+        expect(block.elements[1].position).toEqual([3,5]);
+        expect(block.elements[2].position).toEqual([4,5]);
+        expect(block.elements[3].position).toEqual([4,4]);
       });
 
       it("moves right", function() {
         block.moveRight();
-        expect(block.elements[0].position).toEqual([0,1]);
-        expect(block.elements[1].position).toEqual([1,1]);
-        expect(block.elements[2].position).toEqual([2,1]);
-        expect(block.elements[3].position).toEqual([2,0]);
+        expect(block.elements[0].position).toEqual([4,5]);
+        expect(block.elements[1].position).toEqual([5,5]);
+        expect(block.elements[2].position).toEqual([6,5]);
+        expect(block.elements[3].position).toEqual([6,4]);
       });
 
       it("rotates", function() {
         //blocktype 2: [[-1,1],[0,1],[1,1],[1,0]]
         block.rotate();
-        expect(block.elements[0].position).toEqual([1,1]);
-        expect(block.elements[1].position).toEqual([1,0]);
-        expect(block.elements[2].position).toEqual([1,-1]);
-        expect(block.elements[3].position).toEqual([0,-1]);
+        expect(block.elements[0].position).toEqual([5,5]);
+        expect(block.elements[1].position).toEqual([5,4]);
+        expect(block.elements[2].position).toEqual([5,3]);
+        expect(block.elements[3].position).toEqual([4,3]);
       });
 
     });

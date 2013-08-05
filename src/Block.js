@@ -1,4 +1,4 @@
-define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockTypes, Element, CollisionDetector ){
+define(['src/Element','src/CollisionDetector'],function( Element, CollisionDetector ){
 
 
 //*********************PRIVATE METHODS**********************//
@@ -10,7 +10,8 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
           position: [
             this.schema[i][0] + this.center[0],
             this.schema[i][1] + this.center[1]
-          ]
+          ],
+          color: this.color
         });
         els.push(el);
       },this);
@@ -44,7 +45,29 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
       }
     });
     return collision
-  }
+  };
+
+//*********************PRIVATE VARIABLES**********************//
+
+
+  var blockTypes = [
+    [[-1,1],[0,1],[1,1],[0,0]],
+    [[-1,1],[0,1],[1,1],[1,0]],
+    [[-1,0],[0,0],[1,0],[2,0]],
+    [[-1,0],[0,0],[-1,1],[0,1]],
+    [[-1,0],[0,0],[0,1],[1,1]],
+    [[-1,1],[0,1],[0,0],[1,0]],
+    [[-1,0],[-1,1],[0,1],[1,1]],
+  ],
+  colors = [
+    '#f00',
+    '#00f',
+    '#0f0',
+    '#ff0',
+    '#0ff',
+    '#f0f',
+    '#888'
+  ];
 
 
 
@@ -55,7 +78,7 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
     this.attrs = (function(){
       var o = ( opts ? opts : {} );
       return {
-        type: o.type || 1,
+        type: o.type || Math.floor(Math.random()*blockTypes.length),
         center: o.center || [4,1]
       }
     }());
@@ -94,13 +117,24 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
       }else{
         return false;
       }
+    },
+    collision: function(x,y){
+      var points = getNewPoints.call(this,x,y);
+      var collision = false;
+      points.forEach(function(point){
+        if(!CollisionDetector.allowedToMove(point)){
+          collision = true;
+        }
+      });
+      return collision
     }
+
   }
 
   Object.defineProperties(Block.prototype,{
     schema: {
       get: function() {
-        return BlockTypes[this.attrs.type];
+        return blockTypes[this.attrs.type];
       }
     },
     type: {
@@ -111,6 +145,11 @@ define(['src/BlockTypes','src/Element','src/CollisionDetector'],function( BlockT
     center: {
       get: function(){
         return this.attrs.center
+      }
+    },
+    color: {
+      get: function(){
+        return colors[this.attrs.type]
       }
     }
   })

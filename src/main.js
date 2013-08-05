@@ -13,26 +13,12 @@ require(['src/config','src/Grid','src/Block','src/DB','src/Renderer','src/GameCo
 
   DB.counter = new Counter();
 
-
-  DB.block = new Block({
-    type: Math.floor((Math.random()*7)+1),
-    center: [4,0] });
-
-  DB.nextBlock = new Block({
-    type: Math.floor((Math.random()*7)+1),
-    center: [2,1] });
-
-  Renderer.renderNextBlock();
-
-  var rendering_interval = setInterval(function(){
-    Renderer.render()
-  },30);
-
   Renderer.renderGrid(grid);
 
   $(document).on('keydown.startscreen',function(e){
     if(e.keyCode === 32){
       if($('#start-screen').css('display') !== 'hidden'){
+        GameController.prepare();
         GameController.start();
         $('#start-screen').fadeOut();
       }

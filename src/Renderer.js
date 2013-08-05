@@ -8,7 +8,7 @@ define(['src/DB','src/config'],function(DB,config){
       $(el).css({
         width: config.cellSize - 1,
         height: config.cellSize - 1,
-        "background-color": "#f00",
+        "background-color": element.color,
         border: "solid 1px white",
         "z-index": 1000,
         position: "absolute",
@@ -32,6 +32,10 @@ define(['src/DB','src/config'],function(DB,config){
           setCss(elements[i].node,elements[i]);
         };
       },
+      clear: function(){
+        $('#tetris-container').empty();
+        $('#next-block').empty();
+      },
       renderNextBlock: function(){
         var elements = DB.nextBlock.elements;
         for (var i = elements.length - 1; i >= 0; i--) {
@@ -50,9 +54,9 @@ define(['src/DB','src/config'],function(DB,config){
           $(celldiv).css({
             width: cell.size,
             height: cell.size,
-            'background-color': '#000',
+            'background-color': '#111',
             position: "absolute",
-            border: "solid 1px grey",
+            border: "solid 1px #222",
             top: cell.y,
             left: cell.x
           });
