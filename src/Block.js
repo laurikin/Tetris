@@ -71,14 +71,14 @@ define(['src/Element','src/CollisionDetector'],function( Element, CollisionDetec
 
 
 
-//*********************MAIN OBJECT********************//
+//*********************MAIN OBJECT*********************//
 
   var Block = function(opts) {
 
     this.attrs = (function(){
       var o = ( opts ? opts : {} );
       return {
-        type: o.type || Math.floor(Math.random()*blockTypes.length),
+        type: typeof o.type !== 'undefined' ? o.type : ( Math.floor(Math.random()*( blockTypes.length -1))),
         center: o.center || [4,1]
       }
     }());

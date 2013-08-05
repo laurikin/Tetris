@@ -1,18 +1,21 @@
 define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Listeners'],function(Timer,DB,Block,Renderer,Destroyer,Listeners){
 
-  var onGameOver = function(callBack) {
+  var gameOver = function(callBack) {
     if(DB.block.collision(0,1)){
-      DB.elements.forEach(function(element){
-        if(element.position[1] === 0){
-          callBack();
-        }
+      var elements = DB.elements.concat(DB.block.elements);
+      return elements.some(function(element){
+        return ( element.position[1] === 0 ? true : false )
       });
+    }else{
+      return false;
     }
   };
 
-  var onNewBlock = function(callBack){
+  var newBlock = function(callBack){
     if(DB.block.collision(0,1)){
-      callBack();
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -30,15 +33,12 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
 
       var $this = this;
 
-      onGameOver.call(this, function(){
+      if (gameOver()){
         $this.stop();
-        console.log('Game over!')
-      });
+        console.log('Game over!');
+      }else if (newBlock()){
 
-      onNewBlock.call(this,function(){
-
-
-        console.log('NewBlock')
+        console.log('NewBlock');
 
         DB.block.elements.forEach(function(element){
           DB.elements.push(element);
@@ -58,6 +58,9 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
           type: DB.nextBlock.type
         });
 
+        console.log( DB.block.type )
+        console.log( DB.nextBlock.type )
+
         DB.nextBlock.elements.forEach(function(element){
           $(element.node).remove();
         });
@@ -65,12 +68,11 @@ define(['src/Timer','src/DB','src/Block','src/Renderer','src/Destroyer','src/Lis
         DB.nextBlock = new Block({
           center: [2,1]
         });
-
         Renderer.renderNextBlock(DB.grid);
 
-      });
-
-      DB.block.moveDown();
+      }else{
+        DB.block.moveDown();
+      }
     },
     gameTimer: 0,
     prepare: function(){
